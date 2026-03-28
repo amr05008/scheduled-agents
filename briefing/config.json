@@ -1,0 +1,44 @@
+{
+  "weather": {
+    "url": "https://forecast.weather.gov/MapClick.php?textField1=40.68&textField2=-73.91",
+    "location_label": "Brooklyn, NY"
+  },
+  "feeds": [
+    {
+      "name": "Simon Willison",
+      "url": "https://simonwillison.net/atom/everything/",
+      "max_items": 5
+    },
+    {
+      "name": "Pragmatic Engineer",
+      "url": "https://newsletter.pragmaticengineer.com/feed",
+      "max_items": 3
+    },
+    {
+      "name": "Elena Verna",
+      "url": "https://www.elenaverna.com/feed",
+      "max_items": 3
+    }
+  ],
+  "delivery": {
+    "notion": {
+      "enabled": false,
+      "parent_search_query": "Daily Briefing",
+      "note": "Requires Notion MCP connected at claude.ai/settings/connectors"
+    },
+    "discord_webhook": {
+      "enabled": true,
+      "url": "",
+      "note": "Leave url empty — the webhook URL is passed via the trigger's bootstrap prompt so it stays out of the repo"
+    },
+    "email": {
+      "enabled": false,
+      "note": "Requires email MCP connector (e.g. Resend) at claude.ai/settings/connectors"
+    },
+    "sms": {
+      "enabled": false,
+      "note": "Requires Twilio or similar MCP connector at claude.ai/settings/connectors"
+    }
+  },
+  "timezone": "America/New_York"
+}
