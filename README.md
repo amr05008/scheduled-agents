@@ -15,12 +15,12 @@ Two Discord messages arrive each morning:
 [Claude] [WEATHER] Brooklyn, NY — Saturday, March 28
 
 🌡️ Current conditions (as of 6:02 AM ET)
-• 33°F, Clear skies
+• 33°F / 1°C, Clear skies
 • Wind: NW 14 mph, gusts to 28 mph
 • Humidity: 49%
 
 📊 Today's forecast
-• High: 45°F / Low: 33°F
+• High: 45°F / 7°C — Low: 33°F / 1°C
 • Conditions: Mostly sunny, NW winds 14–16 mph with gusts to 28 mph
 
 🌧 Precipitation
@@ -28,13 +28,13 @@ Two Discord messages arrive each morning:
 • Next chance: 30% Monday night after 2 AM
 
 🚴 Cycling outlook
-• Cold start at 33°F, warming to 45°F by afternoon — dress in layers
+• Cold start at 33°F / 1°C, warming to 45°F / 7°C — dress in layers
 • Gusty NW winds 14–28 mph — significant headwind/crosswind depending on route
 • Clear and sunny all day — good visibility, no precipitation risk
 
 ✅ Confidence: High — hourly and period forecasts are consistent
 
-_Source: NOAA/NWS_
+_Source: wttr.in_
 ```
 
 **Feeds** — one message per source, new posts only, no link previews:
@@ -55,7 +55,7 @@ Claude Code lets you schedule remote agents on a cron schedule. Each run:
 1. Anthropic's cloud clones this repo into an isolated environment
 2. The agent reads `briefing/prompt.md` for instructions
 3. It reads `briefing/user-context.md` to personalize the output
-4. It fetches weather from NOAA/NWS and your configured RSS feeds
+4. It fetches weather from [wttr.in](https://wttr.in) (global coverage, °F and °C) and your configured RSS feeds
 5. It filters RSS to only posts published in the last 24 hours
 6. It posts to Discord (or other configured channels)
 7. It commits a full markdown archive to `briefing/output/`
@@ -107,10 +107,17 @@ This is the most important file — it's what makes the briefing *yours*. Descri
 
 1. In Discord, go to your channel → Edit Channel → Integrations → Webhooks → New Webhook
 2. Copy the webhook URL
-3. Paste it into `config.json` under `delivery.discord_webhook.url`
-4. Set `enabled: true`
+3. Set `delivery.discord_webhook.enabled: true` in `config.json` — **leave `url` empty**
+4. Instead, add the URL to your trigger's bootstrap prompt (keeps it out of your public repo):
 
-No bot setup, no OAuth — Discord webhooks are just HTTPS endpoints.
+```
+The repo has been cloned into your working directory.
+Get today's date by running: date +%Y-%m-%d
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_WEBHOOK_URL
+Then read briefing/prompt.md and follow its instructions exactly.
+```
+
+No bot setup, no OAuth — Discord webhooks are just HTTPS endpoints. Storing the URL in the trigger (not the repo) means you can keep your repo public without exposing it.
 
 ### 5. Create the scheduled trigger
 
