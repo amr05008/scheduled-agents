@@ -1,7 +1,7 @@
 {
   "weather": {
-    "url": "https://forecast.weather.gov/MapClick.php?textField1=40.68&textField2=-73.91",
-    "location_label": "Brooklyn, NY"
+    "location": "Brooklyn, NY",
+    "note": "Change 'location' to any city when traveling — works globally via wttr.in"
   },
   "feeds": [
     {

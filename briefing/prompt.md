@@ -13,19 +13,20 @@ Use the user context throughout — let it guide what you emphasize, how you fra
 
 ### 2. Fetch weather
 
-WebFetch `config.weather.url`. Extract:
-- Current conditions: temperature, sky conditions, wind, humidity
-- Today's forecast: high/low, conditions summary, wind speed/direction/gusts
-- Precipitation: probability, timing, hourly breakdown if available
-- UV index if available and skies are clear
-- Any active weather alerts
+Build the URL: `https://wttr.in/{config.weather.location}?format=j1` (URL-encode the location if it contains spaces).
+WebFetch that URL to get JSON. Extract:
+- Current conditions: `current_condition[0]` — `temp_F`, `temp_C`, `weatherDesc`, `windspeedMiles`, `winddir16Point`, `WindGustMiles`, `humidity`
+- Today's forecast: `weather[0]` — `maxtempF`, `maxtempC`, `mintempF`, `mintempC`, hourly `chanceofrain` across the day
+- UV index: `weather[0].uvIndex`
+
+Always display temperatures as both units: `45°F / 7°C`.
 
 Also synthesize a **Cycling outlook** (3 bullet points) using `user-context.md`:
-- Temp context (e.g. "Chilly start at X°F, warming to Y°F by afternoon")
+- Temp context with both units (e.g. "Cold start at 33°F / 1°C, warming to 45°F / 7°C")
 - Wind impact on cycling (e.g. "Gusty NW winds — expect headwind/crosswind depending on route")
 - Visibility/conditions summary
 
-Rate **Confidence: High / Medium / Low** based on how consistent the hourly and period forecasts are with each other. One sentence of reasoning.
+Rate **Confidence: High / Medium / Low** based on hourly forecast consistency. One sentence of reasoning.
 
 ### 3. Fetch RSS feeds
 
@@ -41,7 +42,7 @@ For each entry in `config.feeds`:
 #### Message 1 — Weather (Discord format, uses ** for bold, • for bullets)
 
 ```
-[Claude] [WEATHER] {location_label} — {Day, Month DD}
+[Claude] [WEATHER] {config.weather.location} — {Day, Month DD}
 
 🌡️ **Current conditions** (as of {time} ET)
 • {temp}°F, {sky conditions}
