@@ -64,7 +64,7 @@ For each entry in `config.feeds`:
 
 {✅ or ⚠️} **Confidence: {High/Medium/Low}** — {one-line reasoning}
 
-_Source: NOAA/NWS_
+_Source: wttr.in_
 ```
 
 #### Message 2 — Feeds (one Discord message per feed that has new content)
