@@ -87,8 +87,7 @@ This is the most important file — it's what makes the briefing *yours*. Descri
 ```json
 {
   "weather": {
-    "url": "https://forecast.weather.gov/MapClick.php?textField1=YOUR_LAT&textField2=YOUR_LON",
-    "location_label": "Your City"
+    "location": "Your City, Country"
   },
   "feeds": [
     { "name": "Feed Name", "url": "https://example.com/feed", "max_items": 5 }
@@ -101,8 +100,6 @@ This is the most important file — it's what makes the briefing *yours*. Descri
   }
 }
 ```
-
-**Finding your weather coordinates:** Go to [forecast.weather.gov](https://forecast.weather.gov), search your location, and copy the lat/lon from the URL.
 
 **Finding RSS feeds:** Most blogs and newsletters have a feed at `/feed` or `/atom.xml`. Substack newsletters are always at `https://yourpublication.substack.com/feed`.
 
@@ -144,6 +141,20 @@ Hit "Run now" from [claude.ai/code/scheduled](https://claude.ai/code/scheduled).
 ---
 
 ## Customizing
+
+### Switch weather location (e.g. when traveling)
+
+Edit the `location` field in `briefing/config.json` and push before the next scheduled run:
+
+```json
+"weather": {
+  "location": "Paris, France"
+}
+```
+
+Weather is powered by [wttr.in](https://wttr.in), which works for any city worldwide. Temperatures are shown in both °F and °C. Just use a city name — `Tokyo`, `London`, `Mexico City` — anything wttr.in recognizes. To verify a location works, visit `https://wttr.in/Your+City?format=j1` in your browser.
+
+To revert when you're home, change it back and push. The next run picks it up automatically — no trigger changes needed.
 
 ### Change the time
 Update the cron expression on your trigger. Cron runs in UTC — use [crontab.guru](https://crontab.guru) to convert. Remember to adjust in March (EDT, UTC-4) and November (EST, UTC-5).
