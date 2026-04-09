@@ -18,6 +18,11 @@
       "name": "Elena Verna",
       "url": "https://www.elenaverna.com/feed",
       "max_items": 3
+    },
+    {
+      "name": "Stratechery",
+      "url": "https://stratechery.passport.online/feed/rss/CZrhr5kWtJSyV4yWUSj4m",
+      "max_items": 4
     }
   ],
   "delivery": {
