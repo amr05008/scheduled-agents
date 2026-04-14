@@ -31,7 +31,8 @@ Rate **Confidence: High / Medium / Low** based on hourly forecast consistency. O
 ### 3. Fetch RSS feeds
 
 For each entry in `config.feeds`:
-- WebFetch the feed URL
+- WebFetch the feed URL.
+- **On 5xx response or fetch failure, wait 60 seconds and retry ONCE.** Feeds often 504 briefly during CDN cache regeneration — a single backoff retry usually catches the refreshed response. If the retry also fails, note "Feed unavailable ({status} error). No content delivered." for that feed and continue to the next feed (don't abort the whole briefing).
 - Parse the entries and **filter to only items published in the last 24 hours** (published date >= yesterday at the same time). Use the `<published>`, `<pubDate>`, or `<updated>` field depending on the feed format.
 - If no new items since yesterday, note "No new posts today" for that feed — do not skip the feed section entirely.
 - From the filtered items, take up to `max_items` most recent.
