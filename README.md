@@ -151,17 +151,21 @@ Hit "Run now" from [claude.ai/code/scheduled](https://claude.ai/code/scheduled).
 
 ### Switch weather location (e.g. when traveling)
 
-Edit the `location` field in `briefing/config.json` and push before the next scheduled run:
+Leave `weather.location` set to your home city and add a time-boxed entry to `weather.travel`. The agent picks the first active entry (where today falls between `start`, if set, and `end` inclusive) and auto-reverts to home once `end` passes — no second push needed.
 
 ```json
 "weather": {
-  "location": "Paris, France"
+  "location": "Brooklyn, NY",
+  "travel": [
+    { "location": "Amsterdam, Netherlands", "end": "2026-04-24" },
+    { "location": "Tokyo, Japan", "start": "2026-06-10", "end": "2026-06-18" }
+  ]
 }
 ```
 
-Weather is powered by [wttr.in](https://wttr.in), which works for any city worldwide. Temperatures are shown in both °F and °C. Just use a city name — `Tokyo`, `London`, `Mexico City` — anything wttr.in recognizes. To verify a location works, visit `https://wttr.in/Your+City?format=j1` in your browser.
+Dates are `YYYY-MM-DD` and interpreted in the agent's timezone. `start` is optional (omit for "starts immediately"); `end` is required and inclusive. Expired entries are ignored, so you can delete them whenever.
 
-To revert when you're home, change it back and push. The next run picks it up automatically — no trigger changes needed.
+Weather is powered by [wttr.in](https://wttr.in), which works for any city worldwide. Temperatures are shown in both °F and °C. Just use a city name — `Tokyo`, `London`, `Mexico City` — anything wttr.in recognizes. To verify a location works, visit `https://wttr.in/Your+City?format=j1` in your browser.
 
 ### Change the time
 Update the cron expression on your trigger. Cron runs in UTC — use [crontab.guru](https://crontab.guru) to convert. Remember to adjust in March (EDT, UTC-4) and November (EST, UTC-5).
