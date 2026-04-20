@@ -1,7 +1,10 @@
 {
   "weather": {
     "location": "Brooklyn, NY",
-    "note": "Change 'location' to any city when traveling — works globally via wttr.in"
+    "travel": [
+      { "location": "Amsterdam, Netherlands", "end": "2026-04-24" }
+    ],
+    "note": "Home 'location' is used by default. Add entries to 'travel' with 'location' and 'end' (YYYY-MM-DD, inclusive) while away; an optional 'start' date lets you pre-schedule future trips. The agent auto-reverts to home once 'end' passes, so expired entries are harmless — delete them at your leisure."
   },
   "feeds": [
     {
