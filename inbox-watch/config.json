@@ -1,6 +1,6 @@
 {
-  "mode": "dry-run",
-  "mode_note": "Always start in 'dry-run' on a fresh deployment. After ~5 weekdays of clean Discord reports, edit to 'apply' and push.",
+  "mode": "apply",
+  "mode_note": "Set to 'apply' (live mode). The agent will create labels and archive routine mail. VIPs are always flagged, never auto-actioned. To revert: change to 'dry-run' and push — next run will only describe what it would do.",
 
   "lookback_window": "1h",
   "lookback_note": "Slightly larger than the 30-min cron so a missed run doesn't drop mail. Increase to 24h for a one-off catch-up run.",

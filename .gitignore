@@ -1,6 +1,7 @@
 .DS_Store
 **/.DS_Store
 
-# inbox-watch — real VIP list and auto-suggested VIPs are private
+# inbox-watch — real VIP list, auto-suggested VIPs, and trigger config are private
 inbox-watch/vips.yaml
 inbox-watch/vips.suggested.yaml
+inbox-watch/trigger-instructions.local.md
