@@ -165,7 +165,11 @@ If the queue is non-empty, build ONE message:
 - Use the deep-link format `https://mail.google.com/mail/u/0/#inbox/<thread_id>`
   so the user can tap straight to the thread on phone.
 
-Post via curl:
+Post via curl. **IMPORTANT — substitute the actual webhook URL value
+(from the CONFIG section of the trigger Instructions you read at startup)
+directly into the curl command. Do NOT use `"$DISCORD_WEBHOOK_URL"` —
+the env var is not exported into the shell, so that would POST to an
+empty URL and silently fail with a 404.**
 
 ```python
 import json
@@ -176,8 +180,11 @@ with open("/tmp/discord_msg.json", "w") as f:
 curl -s -o /tmp/discord_response.txt -w "%{http_code}" \
   -X POST -H "Content-Type: application/json" \
   -d @/tmp/discord_msg.json \
-  "$DISCORD_WEBHOOK_URL"
+  "WEBHOOK_URL_FROM_CONFIG_GOES_HERE"
 ```
+
+(Replace `WEBHOOK_URL_FROM_CONFIG_GOES_HERE` with the literal URL string
+from the CONFIG section before invoking the bash command.)
 
 204 = success. On non-204: do NOT retry the ping (would create duplicates),
 just log the failure. The flagged items keep their `COS/Flagged` label and

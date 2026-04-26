@@ -157,8 +157,26 @@ links so the user can act on the misses.}
 🛠 **Watcher health**: {runs_total} runs, {errors} errors. {✅|⚠️}
 ```
 
-Post via curl to `$DISCORD_WEBHOOK_URL`. Same pattern as the per-30-min
-prompt step 6.
+Post via curl. **IMPORTANT** — substitute the actual webhook URL value
+(from the CONFIG section of the trigger Instructions) directly into the
+curl command. Do NOT use `"$DISCORD_WEBHOOK_URL"` — the env var is not
+exported into the shell.
+
+```python
+import json
+with open("/tmp/discord_msg.json", "w") as f:
+    f.write(json.dumps({"content": msg}))
+```
+```bash
+curl -s -o /tmp/discord_response.txt -w "%{http_code}" \
+  -X POST -H "Content-Type: application/json" \
+  -d @/tmp/discord_msg.json \
+  "WEBHOOK_URL_FROM_CONFIG_GOES_HERE"
+```
+
+(Replace `WEBHOOK_URL_FROM_CONFIG_GOES_HERE` with the literal URL string
+from the CONFIG section before invoking the bash command. Same pattern
+as `prompt.md` step 6.)
 
 ---
 
