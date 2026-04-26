@@ -111,6 +111,26 @@ will spot them during the weekly audit if they accumulate.
 
 ---
 
+## Precedence when multiple categories fire
+
+A single message can match more than one signal (e.g., a `wami`-labeled
+thread that's also a textbook cold-sales pitch). Apply this precedence,
+top wins:
+
+1. **VIP** — anything in `vips.yaml`. Always wins. No exceptions.
+2. **Cold-sales** — if all 5 cold-sales signals fire, the more-specific
+   pattern wins over broader needs-attention signals (including the
+   wami signal). Auto-archive to `Marketing`.
+3. **Needs-attention** — any of the listed signals.
+4. **Routine rule-match** — pattern matches in `rules.yaml`.
+5. **Uncertain** — fallback.
+
+Rule of thumb: more-specific classifications beat broader ones, except
+VIP which always wins. If two non-VIP signals tie, prefer the one that
+keeps the message in the inbox (= the more-cautious choice).
+
+---
+
 ## Anti-patterns — things that look urgent but usually aren't
 
 - **"URGENT" in all caps from marketing.** Tone ≠ signal — almost always junk.

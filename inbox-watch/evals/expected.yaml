@@ -60,7 +60,7 @@ expected:
   "024": {class: uncertain, ping: false, rationale: "CC'd thread, ambiguous ask, primary actor is someone else"}
   "025": {class: uncertain, ping: false, rationale: "looks like cold sales BUT has List-Unsubscribe header → fails signal #5; classify uncertain not cold-sales"}
   "026": {class: uncertain, ping: false, rationale: "promotional content but no List-Unsubscribe header → no rule fires; not cold sales (mass blast not human pitch); fall back to uncertain per heuristics anti-pattern note"}
-  "027": {class: uncertain, ping: false, rationale: "wami acquisition inquiry — heuristics explicitly say 'let the user judge'"}
+  "027": {class: needs-attention, ping: true, rationale: "wami label + non-automated sender → wami needs-attention signal fires unconditionally; acquisition inquiry is exactly what the user would want surfaced. The cold-sales 'let the user judge' carve-out only meant 'don't auto-archive as cold sales' — it doesn't override wami flagging."}
 
   # ----- Anti-patterns -----
   "028": {class: routine-rule-match, ping: false, rationale: "'URGENT' tone is bait but CATEGORY_PROMOTIONS+List-Unsubscribe catch-all → Marketing; tone != signal"}

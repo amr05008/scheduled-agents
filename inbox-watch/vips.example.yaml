@@ -10,6 +10,11 @@
 #   context      — one-line reminder of why this person matters
 
 vips:
+  - name: "Example Sister"
+    email: "sister@example.com"
+    relationship: "family"
+    context: "Always surface immediately"
+
   - name: "Example Family"
     email: "family.member@example.com"
     relationship: "family"
