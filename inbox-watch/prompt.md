@@ -186,9 +186,15 @@ curl -s -o /tmp/discord_response.txt -w "%{http_code}" \
 (Replace `WEBHOOK_URL_FROM_CONFIG_GOES_HERE` with the literal URL string
 from the CONFIG section before invoking the bash command.)
 
-204 = success. On non-204: do NOT retry the ping (would create duplicates),
-just log the failure. The flagged items keep their `COS/Flagged` label and
-will surface in the next weekly audit.
+204 = success. On non-204:
+- Read `/tmp/discord_response.txt` and print BOTH the HTTP code AND the
+  full response body verbatim to stdout (so the trigger UI shows exactly
+  what Discord said — do not paraphrase or interpret).
+- Print the first 60 chars of the curl URL you used (don't print the
+  full webhook token, but show enough that we can verify URL shape).
+- Do NOT retry the ping (would create duplicates).
+- The flagged items keep their `COS/Flagged` label and will surface in
+  the next weekly audit.
 
 ---
 
