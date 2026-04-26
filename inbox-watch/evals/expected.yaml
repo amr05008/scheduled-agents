@@ -1,0 +1,68 @@
+# Expected classification per fixture id.
+#
+# class options:
+#   vip                  — match in vips.yaml; always pings; never auto-actioned
+#   needs-attention      — high-confidence flag; pings; not auto-actioned
+#   routine-rule-match   — matches a rule in rules.yaml; auto-archives; no ping
+#   cold-sales           — meets ALL 5 cold-sales signals; auto-archives; no ping
+#   uncertain            — labeled COS/Reviewed; left in inbox; no ping
+#
+# ping options: true | false   (vip and needs-attention → true; others → false)
+#
+# rationale: short note explaining the call. If a fixture's classification
+# is debatable, document the reasoning here so future tuners understand
+# WHY the fixture is "expected" to land where it does.
+#
+# When the eval runs, mismatches print this rationale alongside the
+# expected/actual diff so the failure is debuggable in one glance.
+
+# Assumes vips.yaml contains:
+#   - sister@example.com
+#   - *@bigclient.example.com
+#   - family.member@example.com
+#   - fraud-alerts@yourbank.com
+# (Any vips.yaml lacking these can't run the suite — see evals/README.md.)
+
+expected:
+
+  # ----- VIP cases -----
+  "001": {class: vip, ping: true, rationale: "exact-match on sister@ in vips.yaml"}
+  "002": {class: vip, ping: true, rationale: "wildcard *@bigclient.example.com in vips.yaml; question + deadline don't matter, VIP overrides"}
+  "003": {class: vip, ping: true, rationale: "exact-match family.member@ in vips.yaml; trivial subject doesn't matter"}
+  "004": {class: vip, ping: true, rationale: "VIP override of CATEGORY_PROMOTIONS+List-Unsubscribe rule — VIP wins"}
+  "005": {class: vip, ping: true, rationale: "fraud-alerts@yourbank.com in vips.yaml; financial alert"}
+
+  # ----- Needs-attention -----
+  "006": {class: needs-attention, ping: true, rationale: "real human, direct question, no spam markers"}
+  "007": {class: needs-attention, ping: true, rationale: "decision request: 'sign-off'"}
+  "008": {class: needs-attention, ping: true, rationale: "explicit deadline, time-sensitive"}
+  "009": {class: needs-attention, ping: true, rationale: "follow-up chasing prior commitment"}
+  "010": {class: needs-attention, ping: true, rationale: "calendar reschedule, required attendee — meeting change in heuristics"}
+  "011": {class: needs-attention, ping: true, rationale: "wami prospect with pricing question"}
+  "012": {class: needs-attention, ping: true, rationale: "novel sender, real RFQ referencing prior work — paid consult ask"}
+  "013": {class: needs-attention, ping: true, rationale: "recruiter from real company; novel sender on real topic"}
+
+  # ----- Routine rule-match -----
+  "014": {class: routine-rule-match, ping: false, rationale: "matches stripe.com domain rule → Receipts"}
+  "015": {class: routine-rule-match, ping: false, rationale: "matches *@substack.com rule → Newsletters"}
+  "016": {class: routine-rule-match, ping: false, rationale: "matches notifications@* rule → Notifications"}
+  "017": {class: routine-rule-match, ping: false, rationale: "30% off + List-Unsubscribe → Marketing"}
+  "018": {class: routine-rule-match, ping: false, rationale: "noreply@ rule + CATEGORY_UPDATES catch-all both fire → Notifications (first match wins: noreply@)"}
+  "019": {class: routine-rule-match, ping: false, rationale: "'last chance' + List-Unsubscribe → Marketing"}
+
+  # ----- Cold sales -----
+  "020": {class: cold-sales, ping: false, rationale: "5/5 signals: real-name human, unknown, templated 'Hi <name> my name is X', service offered, no List-Unsubscribe"}
+  "021": {class: cold-sales, ping: false, rationale: "5/5 signals: real-name human, unknown, templated lead-gen pitch, service offered, no List-Unsubscribe"}
+  "022": {class: cold-sales, ping: false, rationale: "5/5 signals: real-name human, unknown, templated 'we have X', service offered, no List-Unsubscribe"}
+
+  # ----- Uncertain -----
+  "023": {class: uncertain, ping: false, rationale: "templated greeting but no clear pitch, no obvious sales structure — fail signal #3"}
+  "024": {class: uncertain, ping: false, rationale: "CC'd thread, ambiguous ask, primary actor is someone else"}
+  "025": {class: uncertain, ping: false, rationale: "looks like cold sales BUT has List-Unsubscribe header → fails signal #5; classify uncertain not cold-sales"}
+  "026": {class: uncertain, ping: false, rationale: "promotional content but no List-Unsubscribe header → no rule fires; not cold sales (mass blast not human pitch); fall back to uncertain per heuristics anti-pattern note"}
+  "027": {class: uncertain, ping: false, rationale: "wami acquisition inquiry — heuristics explicitly say 'let the user judge'"}
+
+  # ----- Anti-patterns -----
+  "028": {class: routine-rule-match, ping: false, rationale: "'URGENT' tone is bait but CATEGORY_PROMOTIONS+List-Unsubscribe catch-all → Marketing; tone != signal"}
+  "029": {class: routine-rule-match, ping: false, rationale: "noreply@github.com matches noreply@* rule → Notifications; per anti-pattern docs, routine maintenance for daily-use platform"}
+  "030": {class: uncertain, ping: false, rationale: "CC'd FYI on long thread; no action requested — uncertain (label COS/Reviewed, leave in inbox, do not ping)"}

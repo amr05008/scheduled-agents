@@ -1,0 +1,31 @@
+# VIP sender list — people whose messages ALWAYS get flagged and NEVER
+# get auto-archived, regardless of content or rules.
+#
+# Copy to vips.yaml and fill in real entries. The real file is gitignored.
+#
+# Fields:
+#   name         — human name (for display in Discord pings)
+#   email        — exact match or domain wildcard: "user@example.com" or "*@example.com"
+#   relationship — collaborator | client | family | friend | vendor | other
+#   context      — one-line reminder of why this person matters
+
+vips:
+  - name: "Example Family"
+    email: "family.member@example.com"
+    relationship: "family"
+    context: "Always surface immediately"
+
+  - name: "Example Client"
+    email: "*@bigclient.example.com"
+    relationship: "client"
+    context: "Top side-business account — any thread goes to top of ping"
+
+  - name: "Example Collaborator"
+    email: "collab@example.com"
+    relationship: "collaborator"
+    context: "Co-author on side project — usually time-sensitive"
+
+  - name: "Example Bank Fraud"
+    email: "fraud-alerts@yourbank.com"
+    relationship: "vendor"
+    context: "Surface any fraud alert immediately"

@@ -1,0 +1,315 @@
+# Synthetic email fixtures for the inbox-watch eval suite.
+#
+# All addresses, names, subjects, and snippets are made up. NO REAL PII.
+# Each fixture mimics what mcp__claude_ai_Gmail__get_thread would return
+# for one new unread thread.
+#
+# Fields:
+#   id           — stable identifier (sortable). Pad to 3 digits.
+#   from         — sender (display name + email)
+#   to           — recipient
+#   subject      — subject line
+#   snippet      — first ~200 chars of body
+#   labels       — Gmail labels already on the thread (e.g., wami,
+#                  CATEGORY_PROMOTIONS)
+#   list_unsub   — true if List-Unsubscribe header present
+#   thread_age   — "fresh" | "1d" | "3d" — how recent
+#
+# The eval-runner classifies each per triage-heuristics.md and compares
+# to expected.yaml. Adding a fixture: pick a unique id, add to both files.
+
+fixtures:
+
+  # ============================================================
+  # VIP cases (5)
+  # ============================================================
+
+  - id: "001"
+    from: "Sister <sister@example.com>"
+    to: "you@example.com"
+    subject: "Hey, you free Sunday?"
+    snippet: "Wanted to grab brunch — let me know"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "002"
+    from: "Britt at BigClient <britt@bigclient.example.com>"
+    to: "you@yourbiz.example"
+    subject: "Can you review the contract by Wed?"
+    snippet: "Hey Sam — sending the SoW over for signoff. Need it by Wed EOD if possible."
+    labels: ["wami"]
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "003"
+    from: "Family Member <family.member@example.com>"
+    to: "you@example.com"
+    subject: "FYI"
+    snippet: "Just a heads up — call me when you can."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "004"
+    from: "BigClient Ops <ops@bigclient.example.com>"
+    to: "you@yourbiz.example"
+    subject: "Newsletter from BigClient"
+    snippet: "Here is the BigClient monthly update with offers and news."
+    labels: ["wami", "CATEGORY_PROMOTIONS"]
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "005"
+    from: "Bank Fraud <fraud-alerts@yourbank.com>"
+    to: "you@example.com"
+    subject: "Unusual activity on your account"
+    snippet: "We detected an unusual charge for $1,247. Please verify."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  # ============================================================
+  # Needs-attention (non-VIP) cases (8)
+  # ============================================================
+
+  - id: "006"
+    from: "Maria Chen <maria@coolco.dev>"
+    to: "you@example.com"
+    subject: "Quick question on the demo flow"
+    snippet: "Hey Sam — saw your post on scheduled agents. Quick question: how do you handle auth when the trigger runs in cloud?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "007"
+    from: "Sam Patel <sam@coauthor.example>"
+    to: "you@example.com"
+    subject: "Need your sign-off on the Q3 deck"
+    snippet: "I revised the slides per your comments. Can you give a thumbs-up so I can send to the team?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "008"
+    from: "Project Lead <lead@partner.example>"
+    to: "you@example.com"
+    subject: "Deadline reminder — Friday EOD"
+    snippet: "Reminder that the API spec needs to be locked by Friday EOD so we can start build Monday."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "009"
+    from: "Jamie Rios <jamie@earlierthread.example>"
+    to: "you@example.com"
+    subject: "Following up on last week's note"
+    snippet: "Circling back on the integration question I sent last Thursday — any update?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "010"
+    from: "Calendar <calendar-no-reply@google.com>"
+    to: "you@example.com"
+    subject: "Updated invitation: Q3 board prep"
+    snippet: "The time of this event has changed. New time: Wed 11am ET. You are a required attendee."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "011"
+    from: "Prospect <ops@somenewco.io>"
+    to: "you@yourbiz.example"
+    subject: "Pricing question on the wami plan"
+    snippet: "Hey, looking at signing up — what does the team plan run for 12 seats? Also do you offer a startup discount?"
+    labels: ["wami"]
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "012"
+    from: "Emma Lin <emma@cooldesignagency.example>"
+    to: "you@example.com"
+    subject: "RFQ — your work on the briefing system"
+    snippet: "Hi Sam — I came across your scheduled-agents repo via a friend. We have a similar project at our agency and I'd love to discuss bringing you in for a paid consult. Are you taking on engagements?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "013"
+    from: "Recruiter <r@bignamecompany.com>"
+    to: "you@example.com"
+    subject: "AI eng role — would love 30 min"
+    snippet: "Hi Sam, your work on agent infra came up — we're hiring an AI eng lead. Open to a quick chat?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  # ============================================================
+  # Routine rule-match (6)
+  # ============================================================
+
+  - id: "014"
+    from: "Stripe <receipts@stripe.com>"
+    to: "you@example.com"
+    subject: "Your receipt from Vercel #1234"
+    snippet: "Receipt for $20.00 paid on Apr 25, 2026."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "015"
+    from: "Simon Willison <simon@simonwillison.substack.com>"
+    to: "you@example.com"
+    subject: "This week in LLMs — Apr 25"
+    snippet: "Notes from a week of building with Claude 4.7 and gpt-5..."
+    labels: ["CATEGORY_UPDATES"]
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "016"
+    from: "GitHub <notifications@github.com>"
+    to: "you@example.com"
+    subject: "[scheduled-agents] PR #42 merged"
+    snippet: "Your pull request has been merged into main."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "017"
+    from: "Acme Promos <promos@acmestore.com>"
+    to: "you@example.com"
+    subject: "30% off everything this weekend"
+    snippet: "Limited time — shop the spring sale before it ends Sunday night."
+    labels: ["CATEGORY_PROMOTIONS"]
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "018"
+    from: "Linear <noreply@linear.app>"
+    to: "you@example.com"
+    subject: "Weekly project update"
+    snippet: "Your team shipped 12 issues this week."
+    labels: ["CATEGORY_UPDATES"]
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "019"
+    from: "Discount Co <hello@discountco.com>"
+    to: "you@example.com"
+    subject: "Last chance — 25% off ends tonight"
+    snippet: "The sale ends at midnight. Use code SPRING25."
+    labels: []
+    list_unsub: true
+    thread_age: "fresh"
+
+  # ============================================================
+  # Cold sales (3) — must hit ALL 5 signals
+  # ============================================================
+
+  - id: "020"
+    from: "Danny Ortiz <danny@unknownagency.example>"
+    to: "you@example.com"
+    subject: "Helping founders like you book more meetings"
+    snippet: "Hi Sam, my name is Danny. I help SaaS founders like you book 4-8 sales calls per week with AI-curated outbound. Worth a 15 min chat?"
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "021"
+    from: "Carla Vega <carla@growthleads.example>"
+    to: "you@yourbiz.example"
+    subject: "Quick intro — could we send you 4-8 leads/week?"
+    snippet: "Hi Sam, would you be interested in chatting if we helped you land 4-8 qualified leads per week for your service? We work with similar startups."
+    labels: ["wami"]
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "022"
+    from: "Storage Sam <sam@cheapstorage.example>"
+    to: "you@example.com"
+    subject: "Office space for your team"
+    snippet: "Hi Sam, We have simple storage solutions, storage warehouse units, compact office spaces available in your area. Reply yes for details."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  # ============================================================
+  # Uncertain (5)
+  # ============================================================
+
+  - id: "023"
+    from: "Connection <hi@unfamiliar.example>"
+    to: "you@example.com"
+    subject: "Saw your work"
+    snippet: "Hi Sam — your project caught my eye. Would love to connect."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "024"
+    from: "Other Person <other@team.example>"
+    to: "team@team.example"
+    subject: "Re: Q2 roadmap thread"
+    snippet: "Looping Sam in case he has thoughts on the second phase. Otherwise we're aligned."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "025"
+    from: "Marcus Pitch <marcus@unknownco.example>"
+    to: "you@example.com"
+    subject: "Helping with your outbound — 15 min?"
+    snippet: "Hi Sam, my name is Marcus. I help SaaS founders generate more leads. Worth a chat? You can opt out anytime."
+    labels: []
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "026"
+    from: "Course Platform <hello@learnstuff.example>"
+    to: "you@example.com"
+    subject: "New AI course launching next week"
+    snippet: "Our most popular course on AI agents is back, starting May 1. Limited seats."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "027"
+    from: "Acquisition Inquiry <m.alves@strangepe.example>"
+    to: "you@yourbiz.example"
+    subject: "Interest in acquiring your service"
+    snippet: "Hi Sam, our PE fund tracks small SaaS in your space. We may be interested in acquiring your service. Open to a call?"
+    labels: ["wami"]
+    list_unsub: false
+    thread_age: "fresh"
+
+  # ============================================================
+  # Anti-patterns — look urgent / actionable but aren't (3)
+  # ============================================================
+
+  - id: "028"
+    from: "Mega Deals <deals@megadeals.example>"
+    to: "you@example.com"
+    subject: "URGENT: Your subscription expires today!"
+    snippet: "Don't miss out — renew now to keep your discount."
+    labels: ["CATEGORY_PROMOTIONS"]
+    list_unsub: true
+    thread_age: "fresh"
+
+  - id: "029"
+    from: "GitHub <noreply@github.com>"
+    to: "you@example.com"
+    subject: "[security] action required: rotate token"
+    snippet: "A personal access token will expire in 30 days. Rotate at your convenience."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"
+
+  - id: "030"
+    from: "Some Lead <lead@a-team.example>"
+    to: "team@a-team.example"
+    subject: "Re: Sam FYI on the rollout"
+    snippet: "FYI Sam — sharing this thread for awareness. No action needed from you."
+    labels: []
+    list_unsub: false
+    thread_age: "fresh"

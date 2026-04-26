@@ -198,6 +198,37 @@ Each agent is just a directory with a `prompt.md` and `config.json`. Drop a new 
 
 ---
 
+## Inbox Watcher (`inbox-watch/`)
+
+A second scheduled agent that watches Gmail every 30 min during weekday work hours and posts a Discord ping ONLY when something needs your attention. The point is to **stop checking email constantly** — let Discord interrupt you when (and only when) it matters.
+
+**How it differs from `briefing/`:**
+- Runs every 30 min Mon-Fri (not once daily)
+- Reads Gmail via the `mcp__claude_ai_Gmail__*` connector (not RSS/web)
+- Posts to Discord only when ≥1 VIP or high-confidence needs-attention email arrived
+- Silent runs send nothing — the only Discord chatter is "real" alerts plus a Sunday weekly self-audit
+
+**Setup** (one-time):
+1. Connect Gmail at [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
+2. Copy `inbox-watch/vips.example.yaml` → `inbox-watch/vips.yaml` and fill in real VIPs
+3. Create a scheduled trigger pointing to `inbox-watch/prompt.md` with cron `*/30 12-22 * * 1-5` (UTC; = every 30 min Mon-Fri 8am-6pm EDT)
+4. Create a second trigger for the Sunday self-audit pointing to `inbox-watch/weekly-audit-prompt.md` with cron `0 13 * * 0`
+5. Both triggers need `DISCORD_WEBHOOK_URL` in their bootstrap (kept out of repo per the same pattern as the briefing agent)
+
+**Key files:**
+- `inbox-watch/prompt.md` — per-run agent instructions
+- `inbox-watch/weekly-audit-prompt.md` — Sunday self-audit
+- `inbox-watch/config.json` — mode (dry-run / apply), thresholds, label names
+- `inbox-watch/triage-heuristics.md` — classification decision tree
+- `inbox-watch/rules.yaml` — auto-archive patterns
+- `inbox-watch/vips.yaml` — VIP list (gitignored)
+- `inbox-watch/evals/` — fixture-based regression tests; run before any prompt change
+- `inbox-watch/RECOVERY.md` — "if pings stop" 5-minute fix checklist
+
+**Always start in dry-run mode.** `config.json` ships with `mode: "dry-run"` — the agent will report what it WOULD do but won't touch labels. After ~5 weekdays of clean Discord reports, edit to `"apply"` and push.
+
+---
+
 ## Repo structure
 
 ```

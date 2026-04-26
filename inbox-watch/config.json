@@ -1,0 +1,42 @@
+{
+  "mode": "dry-run",
+  "mode_note": "Always start in 'dry-run' on a fresh deployment. After ~5 weekdays of clean Discord reports, edit to 'apply' and push.",
+
+  "lookback_window": "1h",
+  "lookback_note": "Slightly larger than the 30-min cron so a missed run doesn't drop mail. Increase to 24h for a one-off catch-up run.",
+
+  "labels": {
+    "flagged": "COS/Flagged",
+    "reviewed": "COS/Reviewed",
+    "auto_archived": "COS/Auto-archived",
+    "wami": "wami",
+    "newsletters": "Newsletters",
+    "receipts": "Receipts",
+    "marketing": "Marketing",
+    "notifications": "Notifications"
+  },
+
+  "ping": {
+    "threshold": "vip-or-high-confidence",
+    "threshold_options": ["vip-only", "vip-or-high-confidence", "any-needs-attention"],
+    "max_items_per_message": 10,
+    "max_subject_chars": 80
+  },
+
+  "delivery": {
+    "discord_webhook": {
+      "enabled": true,
+      "url": "",
+      "note": "URL passed via trigger bootstrap as DISCORD_WEBHOOK_URL env var. Kept out of the repo so this file can stay public."
+    }
+  },
+
+  "schedule": {
+    "watcher_cron_utc": "*/30 12-22 * * 1-5",
+    "watcher_cron_note": "Every 30 min, Mon-Fri 8am-6pm ET (EDT). Update to '*/30 13-23 * * 1-5' when EST kicks in November.",
+    "audit_cron_utc": "0 13 * * 0",
+    "audit_cron_note": "Sundays 9am ET (EDT). Reads weekly-audit-prompt.md instead of prompt.md."
+  },
+
+  "timezone": "America/New_York"
+}

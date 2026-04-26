@@ -1,0 +1,117 @@
+# Auto-archive and labeling rules for inbox-watch.
+#
+# Matching semantics (all conditions in a `match` block must be true):
+#   from              — exact email or wildcard ("*@stripe.com")
+#   from_domain       — just the domain part ("stripe.com")
+#   subject_contains  — list of case-insensitive substrings (ANY match)
+#   list_unsubscribe  — true = message has List-Unsubscribe header
+#   has_label         — Gmail label must already be present
+#                       (Gmail categories are labels: CATEGORY_PROMOTIONS,
+#                        CATEGORY_UPDATES, CATEGORY_SOCIAL, CATEGORY_FORUMS)
+#
+# Rules are evaluated in order. First match wins. A rule is only applied
+# if ALL of these are also true:
+#   • sender is not in vips.yaml
+#   • message confidence is "high" (judged at runtime)
+#   • config.json:mode == "apply" (not dry-run)
+
+auto_archive:
+  # ========== Receipts and billing ==========
+  - match:
+      from_domain: "stripe.com"
+    label: "Receipts"
+  - match:
+      from: "receipts@*"
+    label: "Receipts"
+  - match:
+      # Narrow phrases only — "invoice" or "receipt" alone match promo mail.
+      subject_contains:
+        - "your receipt"
+        - "payment received"
+        - "payment confirmation"
+        - "order confirmation"
+        - "billing statement"
+    label: "Receipts"
+
+  # ========== Newsletters ==========
+  - match:
+      from: "newsletter@*"
+    label: "Newsletters"
+  - match:
+      from: "*@substack.com"
+    label: "Newsletters"
+  - match:
+      list_unsubscribe: true
+      subject_contains:
+        - "this week"
+        - "weekly digest"
+        - "daily brief"
+    label: "Newsletters"
+
+  # ========== Marketing (specific) ==========
+  - match:
+      list_unsubscribe: true
+      subject_contains:
+        - "% off"
+        - "sale"
+        - "limited time"
+        - "last chance"
+        - "ends tonight"
+    label: "Marketing"
+
+  # ========== Transactional notifications ==========
+  - match:
+      from: "notifications@*"
+    label: "Notifications"
+  - match:
+      from: "no-reply@*"
+    label: "Notifications"
+  - match:
+      from: "noreply@*"
+    label: "Notifications"
+  - match:
+      from: "no_reply@*"                   # Underscore variant
+    label: "Notifications"
+
+  # ========== Catch-alls (use with care) ==========
+  # Gmail auto-categorized promotions with unsubscribe → Marketing
+  - match:
+      has_label: "CATEGORY_PROMOTIONS"
+      list_unsubscribe: true
+    label: "Marketing"
+  # Gmail auto-categorized updates with unsubscribe → Notifications
+  - match:
+      has_label: "CATEGORY_UPDATES"
+      list_unsubscribe: true
+    label: "Notifications"
+
+# ============================================================
+# LLM-driven auto-action categories
+# ============================================================
+# Some junk can't be pattern-matched. The agent uses LLM judgment to
+# catch it. See triage-heuristics.md for signals.
+
+llm_auto_action:
+  - category: "cold_sales"
+    label: "Marketing"
+    description: |
+      Templated outbound pitches from unknown humans offering a service
+      or product. High-confidence requires ALL FIVE signals from
+      triage-heuristics.md. If any signal is missing → uncertain.
+
+# Label taxonomy — agent will create any missing labels at first use.
+# Keep under ~15 to avoid sprawl.
+label_taxonomy:
+  # Category labels (applied on cleanup)
+  - "Newsletters"
+  - "Receipts"
+  - "Marketing"
+  - "Notifications"
+
+  # COS/* labels — state owned by inbox-watch
+  - "COS/Flagged"          # Needs the user's attention; surfaced in Discord ping
+  - "COS/Reviewed"         # Seen by triage, not pinged, left in inbox
+  - "COS/Auto-archived"    # (Optional) Visibility into what was archived
+
+  # Domain context labels (applied by Gmail filter, not agent)
+  - "wami"                 # Forwarded from your business address
