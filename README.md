@@ -198,7 +198,11 @@ Each agent is just a directory with a `prompt.md` and `config.json`. Drop a new 
 
 ---
 
-## Inbox Watcher (`inbox-watch/`)
+## Inbox Watcher (`inbox-watch/`) — ⚠️ superseded 2026-04-26
+
+> **Status:** This agent is being **replaced** by a Cloudflare-Worker-based redesign that lives in a separate repo: [`~/repos/inbox-watcher`](https://github.com/amr05008/inbox-watcher) *(repo not yet pushed at time of writing)*. After ~3 hours of debugging on 2026-04-26, three failure classes (Gmail MCP write-scope auth, Claude trigger clone-vs-push race conditions, and an opaque Discord 403 inside the trigger sandbox) made the scheduled-trigger architecture untenable. The redesign uses Gmail forwarding → Cloudflare Email Routing → Worker → Discord webhook — no OAuth, no MCP, no scheduled triggers. See `~/repos/inbox-watcher/docs/superpowers/specs/2026-04-26-email-triage-redesign.md` for the full rationale.
+>
+> The historical `inbox-watch/` directory below remains for reference only. Do NOT spin it up fresh.
 
 A second scheduled agent that watches Gmail every 30 min during weekday work hours and posts a Discord ping ONLY when something needs your attention. The point is to **stop checking email constantly** — let Discord interrupt you when (and only when) it matters.
 
