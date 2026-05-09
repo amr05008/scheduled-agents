@@ -16,7 +16,11 @@ Use the user context throughout — let it guide what you emphasize, how you fra
 **Pick the active location.** Default to `config.weather.location` (home). If `config.weather.travel` exists, scan it for an entry where `end >= today` AND (`start` is absent OR `start <= today`). If one matches, use that entry's `location` instead — this is `location_label` for the rest of the briefing. If multiple match, use the first. Print which location was chosen and why (home vs. travel entry).
 
 Build the URL: `https://wttr.in/{location_label}?format=j1` (URL-encode the location if it contains spaces).
-WebFetch that URL to get JSON. Extract:
+WebFetch that URL to get JSON.
+
+**On 5xx response or fetch failure, wait 60 seconds and retry ONCE.** wttr.in occasionally returns 503 during traffic spikes — a single backoff retry usually catches a working response. If the retry also fails, set the weather message to a single-line warning (`⚠️ Weather data unavailable — wttr.in returned {status} on two attempts. Please check weather manually.`) and skip the rest of step 2 (still proceed with feeds and delivery — don't abort the briefing).
+
+Extract:
 - Current conditions: `current_condition[0]` — `temp_F`, `temp_C`, `weatherDesc`, `windspeedMiles`, `winddir16Point`, `WindGustMiles`, `humidity`
 - Today's forecast: `weather[0]` — `maxtempF`, `maxtempC`, `mintempF`, `mintempC`, hourly `chanceofrain` across the day
 - UV index: `weather[0].uvIndex`
