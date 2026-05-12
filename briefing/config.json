@@ -2,7 +2,7 @@
   "weather": {
     "location": "Brooklyn, NY",
     "travel": [
-      { "location": "Amsterdam, Netherlands", "end": "2026-04-24" }
+      { "location": "Barcelona, Spain", "start": "2026-05-19", "end": "2026-05-30" }
     ],
     "note": "Home 'location' is used by default. Add entries to 'travel' with 'location' and 'end' (YYYY-MM-DD, inclusive) while away; an optional 'start' date lets you pre-schedule future trips. The agent auto-reverts to home once 'end' passes, so expired entries are harmless — delete them at your leisure."
   },
